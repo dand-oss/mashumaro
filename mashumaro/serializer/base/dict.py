@@ -4,19 +4,39 @@ from mashumaro.serializer.base.metaprogramming import CodeBuilder
 
 
 class DataClassDictMixin:
-    def __init_subclass__(cls, **kwargs):
-        builder = CodeBuilder(cls)
-        exc = None
+    # def __init_subclass__(cls, **kwargs):
+    #   make_builder()
+
+    # call this in post_init...
+    @classmethod
+    def build_types(cls):
+
         try:
-            builder.add_from_dict()
-        except Exception as e:
-            exc = e
-        try:
-            builder.add_to_dict()
-        except Exception as e:
-            exc = e
-        if exc:
-            raise exc
+            # don't do it twice...
+            return cls.__is_mashu_built__
+
+        except AttributeError:
+
+            builder = CodeBuilder(cls)
+
+            # we like it so much, we call it twice!!
+            # copy-paste error, or partial side effect?
+            exc = None
+            try:
+                builder.add_from_dict()
+            except Exception as e:
+                exc = e
+            try:
+                builder.add_to_dict()
+            except Exception as e:
+                exc = e
+            if exc:
+                raise exc
+
+            # done
+            cls.__is_mashu_built__ = True
+
+        return cls.__is_mashu_built__
 
     def to_dict(
             self,
