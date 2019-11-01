@@ -5,7 +5,7 @@ from mashumaro.serializer.base.metaprogramming import CodeBuilder
 
 class DataClassDictMixin:
     # def __init_subclass__(cls, **kwargs):
-    #   make_builder()
+    #   build_types()
 
     # call this in post_init...
     @classmethod
@@ -24,10 +24,6 @@ class DataClassDictMixin:
             exc = None
             try:
                 builder.add_from_dict()
-            except Exception as e:
-                exc = e
-            try:
-                builder.add_to_dict()
             except Exception as e:
                 exc = e
             if exc:
