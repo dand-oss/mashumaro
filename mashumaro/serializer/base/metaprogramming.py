@@ -135,15 +135,7 @@ class CodeBuilder:
     def ensure_module_imported(self, module: str) -> None:
         if module not in self.modules:
             self.modules.add(module)
-            self.add_line(f"if '{module}' not in globals():")
-            with self.indent():
-                self.add_line(f"import {module}")
-            root_module = module.split(".")[0]
-            if root_module not in self.globals:
-                self.globals.add(root_module)
-                self.add_line("else:")
-                with self.indent():
-                    self.add_line(f"global {root_module}")
+            self.add_line(f"import {module}")
 
     def add_line(self, line) -> None:
         self.lines.append(f"{self._current_indent}{line}")
