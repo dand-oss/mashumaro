@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from mashumaro.serializer.base.metaprogramming import CodeBuilder
 
 @dataclass
